@@ -12,6 +12,7 @@ class State {
   static let shared = State()
   
   var poiLocations: [PoiLocation] = []
+  var trackingPoi: PoiLocation?
 }
 
 struct PoiLocation {

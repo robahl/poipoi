@@ -9,13 +9,17 @@ import UIKit
 import CoreLocation
 
 class DirectionsVC: UIViewController, CLLocationManagerDelegate {
-  @IBOutlet weak var latitudeLabel: UILabel!
-  @IBOutlet weak var longitudeLabel: UILabel!
+  @IBOutlet weak var distanceLabel: UILabel!
   @IBOutlet weak var headingLabel: UILabel!
   @IBOutlet weak var compassView: CompassView!
   
   var locationManager = CLLocationManager()
   var lastLocation: CLLocation?
+  var trackingPoi: PoiLocation?
+  
+  override func viewDidAppear(_ animated: Bool) {
+    trackingPoi = State.shared.trackingPoi
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -28,16 +32,57 @@ class DirectionsVC: UIViewController, CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     if let location = locations.last {
       lastLocation = location
-      latitudeLabel.text = "Lat: \(location.coordinate.latitude)"
-      longitudeLabel.text = "Lon: \(location.coordinate.longitude)"
+      
+      if let trackingPoi = trackingPoi {
+        let distance = trackingPoi.location.distance(from: location)
+        distanceLabel.text = "Distance: \(distance)"
+      }
     }
   }
   
   func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-    headingLabel.text = "Heading \(newHeading.magneticHeading)"
+    let magneticHeading  = Int(round(newHeading.magneticHeading))
+    var t: Float = 0.0
+    var diff: CLLocationDirection = 0
     
-    compassView.needleAngle = newHeading.magneticHeading
+    if let poi = trackingPoi?.location {
+      t = getHeadingFrom(lastLocation!, to: poi)
+      diff = getHeadingDifferenceFrom(newHeading.magneticHeading, to: CLLocationDirection(t))
+    }
     
+    // For debugging purpose
+    headingLabel.text = "H: \(magneticHeading) - L: \(t) D: \(diff)"
+    
+    compassView.needleAngle = Float(diff)
+    
+  }
+  
+  func getHeadingFrom(_ from: CLLocation, to: CLLocation) -> Float {
+    let radius = 6371 // earth radius in km
+    
+    let deltaLat = to.coordinate.latitude - from.coordinate.latitude
+    let deltaLon = to.coordinate.longitude - from.coordinate.longitude
+    
+    let a = pow(sin(deltaLat/2), 2) + cos(from.coordinate.latitude) * cos(to.coordinate.latitude) * pow(sin(deltaLon/2), 2)
+    let c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    
+    
+    return (Float(radius) * Float(c)) * 180 / .pi // degrees instead of radians
+  }
+  
+  func getHeadingDifferenceFrom(_ from: CLLocationDirection, to: CLLocationDirection) -> CLLocationDirection {
+    let diff = from - to
+    let absDiff = abs(diff)
+    
+    if (absDiff <= 180) {
+      return absDiff == 180 ? absDiff : diff
+    }
+    
+    if (to > from) {
+      return absDiff - 360
+    }
+    
+    return 360 - absDiff
   }
   
   @IBAction func poiPressed(_ sender: UIButton) {

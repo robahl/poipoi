@@ -25,6 +25,12 @@ class LocationsVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     return UITableViewCell()
   }
   
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    State.shared.trackingPoi = State.shared.poiLocations[indexPath.row]
+    // Navigate to DirectionsVC
+    tabBarController?.selectedIndex = 1
+  }
+  
   override func viewDidAppear(_ animated: Bool) {
     tableView.reloadData()
   }

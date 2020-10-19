@@ -8,7 +8,7 @@
 import UIKit
 
 class CompassView: UIView {
-  var needleAngle = 0.0 {
+  var needleAngle: Float = 0.0 {
     didSet {
       setNeedsDisplay()
     }
@@ -40,7 +40,7 @@ class CompassView: UIView {
     needle.stroke()
   }
   
-  func deg2rad(_ number: Double) -> CGFloat {
+  func deg2rad(_ number: Float) -> CGFloat {
       return CGFloat(number * .pi / 180)
   }
 }
