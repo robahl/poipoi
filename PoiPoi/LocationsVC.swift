@@ -9,7 +9,6 @@ import UIKit
 
 class LocationsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
   @IBOutlet weak var tableView: UITableView!
-  let mock = ["hej", "min", "lilla", "kompis", "vad", "gor", "du", "i dag", "tihi"]
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return State.shared.poiLocations.count

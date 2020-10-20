@@ -13,7 +13,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    // Override point for customization after application launch.
+    
+    if let savedLocations = UserDefaults.standard.object(forKey: "PoiLocations") as? Data {
+        let decoder = JSONDecoder()
+        if let loadedLocations = try? decoder.decode([PoiLocation].self, from: savedLocations) {
+          State.shared.poiLocations = loadedLocations
+        }
+    }
+    
     return true
   }
 

@@ -34,7 +34,7 @@ class DirectionsVC: UIViewController, CLLocationManagerDelegate {
       lastLocation = location
       
       if let trackingPoi = trackingPoi {
-        let distance = trackingPoi.location.distance(from: location)
+        let distance = CLLocation(latitude: trackingPoi.latitude, longitude: trackingPoi.longitude).distance(from: location)
         distanceLabel.text = "Distance: \(distance)"
       }
     }
@@ -45,8 +45,8 @@ class DirectionsVC: UIViewController, CLLocationManagerDelegate {
     var t: Float = 0.0
     var diff: CLLocationDirection = 0
     
-    if let poi = trackingPoi?.location {
-      t = getHeadingFrom(lastLocation!, to: poi)
+    if let poi = trackingPoi {
+      t = getHeadingFrom(lastLocation!, to: CLLocation(latitude: poi.latitude, longitude: poi.longitude))
       diff = getHeadingDifferenceFrom(newHeading.magneticHeading, to: CLLocationDirection(t))
     }
     
@@ -96,7 +96,7 @@ class DirectionsVC: UIViewController, CLLocationManagerDelegate {
       alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
         let textField = alert?.textFields![0]
         
-        State.shared.poiLocations.append(PoiLocation(name: textField?.text ?? "Untitled", location: location))
+        State.shared.poiLocations.append(PoiLocation(name: textField?.text ?? "Untitled", latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
         // Navigate to the locations table view
         self.tabBarController?.selectedIndex = 0
       }))

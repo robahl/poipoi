@@ -10,12 +10,21 @@ import CoreLocation
 
 class State {
   static let shared = State()
+  let encoder = JSONEncoder()
   
-  var poiLocations: [PoiLocation] = []
+  var poiLocations: [PoiLocation] = [] {
+    didSet {
+      if let encoded = try? encoder.encode(poiLocations) {
+        let defaults = UserDefaults.standard
+        defaults.set(encoded, forKey: "PoiLocations")
+      }
+    }
+  }
   var trackingPoi: PoiLocation?
 }
 
-struct PoiLocation {
+struct PoiLocation: Codable {
   var name: String
-  var location: CLLocation
+  var latitude: Double
+  var longitude: Double
 }
