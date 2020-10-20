@@ -30,6 +30,21 @@ class LocationsVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     tabBarController?.selectedIndex = 1
   }
   
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    if editingStyle == .delete {
+      // Deleting the current trackingPoi?
+      if (State.shared.poiLocations[indexPath.row].name == State.shared.trackingPoi?.name) {
+        State.shared.trackingPoi = nil
+      }
+      
+      // Remove from state and reload the table view
+      State.shared.poiLocations.remove(at: indexPath.row)
+      tableView.reloadData()
+      
+      
+    }
+  }
+  
   override func viewDidAppear(_ animated: Bool) {
     tableView.reloadData()
   }
