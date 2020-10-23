@@ -27,6 +27,8 @@ class DirectionsVC: UIViewController, CLLocationManagerDelegate {
     locationManager.delegate = self
     locationManager.startUpdatingLocation()
     locationManager.startUpdatingHeading()
+    
+    headingLabel.isHidden = true
   }
   
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
