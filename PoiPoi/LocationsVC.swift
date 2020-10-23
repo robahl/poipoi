@@ -40,8 +40,6 @@ class LocationsVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
       // Remove from state and reload the table view
       State.shared.poiLocations.remove(at: indexPath.row)
       tableView.reloadData()
-      
-      
     }
   }
   

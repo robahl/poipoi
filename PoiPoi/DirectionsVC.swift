@@ -35,53 +35,53 @@ class DirectionsVC: UIViewController, CLLocationManagerDelegate {
       
       if let trackingPoi = trackingPoi {
         let distance = CLLocation(latitude: trackingPoi.latitude, longitude: trackingPoi.longitude).distance(from: location)
-        distanceLabel.text = "Distance: \(distance)"
+        distanceLabel.text = "Distance: \(Int(round(distance)))"
       }
     }
   }
   
   func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
     let magneticHeading  = Int(round(newHeading.magneticHeading))
-    var t: Float = 0.0
-    var diff: CLLocationDirection = 0
+    var bearing: CLLocationDirection = 360 // NORTH
     
     if let poi = trackingPoi {
-      t = getHeadingFrom(lastLocation!, to: CLLocation(latitude: poi.latitude, longitude: poi.longitude))
-      diff = getHeadingDifferenceFrom(newHeading.magneticHeading, to: CLLocationDirection(t))
+      let destination = CLLocation(latitude: poi.latitude, longitude: poi.longitude)
+      bearing = lastLocation?.bearingTo(destination) ?? 0
     }
     
     // For debugging purpose
-    headingLabel.text = "H: \(magneticHeading) - L: \(t) D: \(diff)"
+    headingLabel.text = "H: \(magneticHeading) - L: \(round(bearing))  D: \(Float(newHeading.magneticHeading - bearing))"
     
-    compassView.needleAngle = Float(diff)
+    compassView.needleAngle = Float(newHeading.magneticHeading - bearing)
     
   }
   
-  func getHeadingFrom(_ from: CLLocation, to: CLLocation) -> Float {
-    let radius = 6371 // earth radius in km
-    
-    let deltaLat = to.coordinate.latitude - from.coordinate.latitude
-    let deltaLon = to.coordinate.longitude - from.coordinate.longitude
-    
-    let a = pow(sin(deltaLat/2), 2) + cos(from.coordinate.latitude) * cos(to.coordinate.latitude) * pow(sin(deltaLon/2), 2)
-    let c = 2 * atan2(sqrt(a), sqrt(1 - a))
-    
-    
-    return (Float(radius) * Float(c)) * 180 / .pi // degrees instead of radians
-  }
-  
+//  func getHeadingFrom(_ from: CLLocation, to: CLLocation) -> Float {
+//    let radius = 6371  // earth radius in km
+//
+//    let deltaLat = to.coordinate.latitude - from.coordinate.latitude
+//    let deltaLon = to.coordinate.longitude - from.coordinate.longitude
+//
+//    let a = pow(sin(deltaLat/2), 2) + cos(from.coordinate.latitude) * cos(to.coordinate.latitude) * pow(sin(deltaLon/2), 2)
+//    let c = 2 * atan2(sqrt(a), sqrt(1 - a))
+//
+//
+//    print((Float(radius) * Float(c)) * 180 / .pi)
+//    return (Float(radius) * Float(c)) * 180 / .pi // degrees instead of radians
+//  }
+
   func getHeadingDifferenceFrom(_ from: CLLocationDirection, to: CLLocationDirection) -> CLLocationDirection {
     let diff = from - to
     let absDiff = abs(diff)
-    
+
     if (absDiff <= 180) {
       return absDiff == 180 ? absDiff : diff
     }
-    
+
     if (to > from) {
       return absDiff - 360
     }
-    
+
     return 360 - absDiff
   }
   
