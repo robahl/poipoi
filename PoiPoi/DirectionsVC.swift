@@ -11,7 +11,7 @@ import CoreLocation
 class DirectionsVC: UIViewController, CLLocationManagerDelegate {
   @IBOutlet weak var distanceLabel: UILabel!
   @IBOutlet weak var headingLabel: UILabel!
-  @IBOutlet weak var compassView: CompassView!
+  @IBOutlet weak var needle: UIImageView!
   
   var locationManager = CLLocationManager()
   var lastLocation: CLLocation?
@@ -41,8 +41,7 @@ class DirectionsVC: UIViewController, CLLocationManagerDelegate {
   }
   
   func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-    let magneticHeading  = Int(round(newHeading.magneticHeading))
-    var bearing: CLLocationDirection = 360 // NORTH
+    var bearing: CLLocationDirection = 0 // NORTH
     
     if let poi = trackingPoi {
       let destination = CLLocation(latitude: poi.latitude, longitude: poi.longitude)
@@ -50,39 +49,10 @@ class DirectionsVC: UIViewController, CLLocationManagerDelegate {
     }
     
     // For debugging purpose
-    headingLabel.text = "H: \(magneticHeading) - L: \(round(bearing))  D: \(Float(newHeading.magneticHeading - bearing))"
+    //    headingLabel.text = "H: \(magneticHeading) - L: \(round(bearing))  D: \(Float(newHeading.magneticHeading - bearing))"
     
-    compassView.needleAngle = Float(newHeading.magneticHeading - bearing)
-    
-  }
-  
-//  func getHeadingFrom(_ from: CLLocation, to: CLLocation) -> Float {
-//    let radius = 6371  // earth radius in km
-//
-//    let deltaLat = to.coordinate.latitude - from.coordinate.latitude
-//    let deltaLon = to.coordinate.longitude - from.coordinate.longitude
-//
-//    let a = pow(sin(deltaLat/2), 2) + cos(from.coordinate.latitude) * cos(to.coordinate.latitude) * pow(sin(deltaLon/2), 2)
-//    let c = 2 * atan2(sqrt(a), sqrt(1 - a))
-//
-//
-//    print((Float(radius) * Float(c)) * 180 / .pi)
-//    return (Float(radius) * Float(c)) * 180 / .pi // degrees instead of radians
-//  }
-
-  func getHeadingDifferenceFrom(_ from: CLLocationDirection, to: CLLocationDirection) -> CLLocationDirection {
-    let diff = from - to
-    let absDiff = abs(diff)
-
-    if (absDiff <= 180) {
-      return absDiff == 180 ? absDiff : diff
-    }
-
-    if (to > from) {
-      return absDiff - 360
-    }
-
-    return 360 - absDiff
+    let angle = bearing - newHeading.magneticHeading;
+    needle.transform = CGAffineTransform(rotationAngle: CGFloat(angle.toRadians))
   }
   
   @IBAction func poiPressed(_ sender: UIButton) {

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B21F8433254364D2004BCC4B /* LocationHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B21F8432254364D2004BCC4B /* LocationHelpers.swift */; };
-		B22DC59F25322CF6003EB5DD /* CompassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22DC59E25322CF6003EB5DD /* CompassView.swift */; };
 		B22DC5A32538E939003EB5DD /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22DC5A22538E939003EB5DD /* State.swift */; };
 		B22DC5A62538EAB9003EB5DD /* LocationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22DC5A52538EAB9003EB5DD /* LocationsVC.swift */; };
 		B261E3E625321A9E00C0C54B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B261E3E525321A9E00C0C54B /* AppDelegate.swift */; };
@@ -21,7 +20,6 @@
 
 /* Begin PBXFileReference section */
 		B21F8432254364D2004BCC4B /* LocationHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationHelpers.swift; sourceTree = "<group>"; };
-		B22DC59E25322CF6003EB5DD /* CompassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompassView.swift; sourceTree = "<group>"; };
 		B22DC5A22538E939003EB5DD /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		B22DC5A52538EAB9003EB5DD /* LocationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsVC.swift; sourceTree = "<group>"; };
 		B261E3E225321A9E00C0C54B /* PoiPoi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PoiPoi.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,7 +70,6 @@
 				B261E3EE25321A9F00C0C54B /* Assets.xcassets */,
 				B261E3F025321A9F00C0C54B /* LaunchScreen.storyboard */,
 				B261E3F325321A9F00C0C54B /* Info.plist */,
-				B22DC59E25322CF6003EB5DD /* CompassView.swift */,
 				B22DC5A52538EAB9003EB5DD /* LocationsVC.swift */,
 				B21F8432254364D2004BCC4B /* LocationHelpers.swift */,
 			);
@@ -151,7 +148,6 @@
 			files = (
 				B261E3EA25321A9E00C0C54B /* DirectionsVC.swift in Sources */,
 				B22DC5A62538EAB9003EB5DD /* LocationsVC.swift in Sources */,
-				B22DC59F25322CF6003EB5DD /* CompassView.swift in Sources */,
 				B261E3E625321A9E00C0C54B /* AppDelegate.swift in Sources */,
 				B21F8433254364D2004BCC4B /* LocationHelpers.swift in Sources */,
 				B22DC5A32538E939003EB5DD /* State.swift in Sources */,
