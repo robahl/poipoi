@@ -10,6 +10,7 @@ import CoreLocation
 
 class DirectionsVC: UIViewController, CLLocationManagerDelegate {
   @IBOutlet weak var distanceLabel: UILabel!
+  @IBOutlet weak var locationNameLabel: UILabel!
   @IBOutlet weak var headingLabel: UILabel!
   @IBOutlet weak var needle: UIImageView!
   
@@ -19,6 +20,7 @@ class DirectionsVC: UIViewController, CLLocationManagerDelegate {
   
   override func viewDidAppear(_ animated: Bool) {
     trackingPoi = State.shared.trackingPoi
+    locationNameLabel.text = trackingPoi?.name
   }
   
   override func viewDidLoad() {
@@ -37,7 +39,7 @@ class DirectionsVC: UIViewController, CLLocationManagerDelegate {
       
       if let trackingPoi = trackingPoi {
         let distance = CLLocation(latitude: trackingPoi.latitude, longitude: trackingPoi.longitude).distance(from: location)
-        distanceLabel.text = "Distance: \(Int(round(distance)))"
+        distanceLabel.text = "\(Int(round(distance))) m"
       }
     }
   }
